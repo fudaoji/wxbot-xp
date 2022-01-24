@@ -7,8 +7,6 @@ import (
 	. "wxbot-xp/core"
 	"wxbot-xp/logger"
 
-	"github.com/fudaoji/go-utils"
-
 	"github.com/gorilla/websocket"
 )
 
@@ -29,7 +27,7 @@ type RecvMessage struct {
 	Id2     string      `json:"id2"` //群ID
 	Id3     string      `json:"id3"`
 	Srvid   uint        `json:"srvid"`
-	Mtype   uint        `json:"type"`
+	Mtype   int         `json:"type"`
 	Wxid    string      `json:"wxid"`
 	Content interface{} `json:"content"`
 	Time    string      `json:"time"`
@@ -45,17 +43,20 @@ type CallbackRes struct {
 func ReceiveHandle(conn *websocket.Conn) {
 	_, msg, err := conn.ReadMessage()
 	if err != nil {
-		log.Println("Error in receive:", err)
+		log.Println("Error in receive:", err.Error())
 		return
 	}
 
 	var data RecvMessage
 	if err := json.Unmarshal(msg, &data); err != nil {
 		logger.Log.Errorf("Unmarshal msg error:%v", err.Error())
+		return
 	}
-
-	ignores := []int{HEART_BEAT, APP_MSG}
-	if exists, _ := utils.ContainsInt(ignores, int(data.Mtype)); !exists {
+	switch data.Mtype {
+	case RECV_TXT_MSG:
+		fallthrough
+	case RECV_PIC_MSG:
+		log.Printf("Receive: %v", data)
 		resp := CallbackRes{RecvMessage: data, Appkey: ""}
 		NotifyWebhook(&resp)
 	}

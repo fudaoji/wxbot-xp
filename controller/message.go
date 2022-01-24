@@ -16,6 +16,22 @@ type sendMsgRes struct {
 	Content string `form:"content" json:"content"`
 }
 
+func SendImgToFriendHandle(ctx *gin.Context) {
+	// 取出请求参数
+	var res sendMsgRes
+	if err := ctx.ShouldBindJSON(&res); err != nil {
+		core.FailWithMessage("参数获取失败", ctx)
+		return
+	}
+
+	err := bot.GetInstance().WriteMessage(websocket.TextMessage, bot.SendImg(res.To, res.Content))
+	if err != nil {
+		core.FailWithMessage(err.Error(), ctx)
+		return
+	}
+	core.Ok(ctx)
+}
+
 func SendTextToFriendHandle(ctx *gin.Context) {
 	// 取出请求参数
 	var res sendMsgRes
@@ -24,7 +40,7 @@ func SendTextToFriendHandle(ctx *gin.Context) {
 		return
 	}
 
-	err := bot.SockConn.WriteMessage(websocket.TextMessage, bot.SendTxt(res.To, res.Content))
+	err := bot.GetInstance().WriteMessage(websocket.TextMessage, bot.SendTxt(res.To, res.Content))
 	if err != nil {
 		core.FailWithMessage(err.Error(), ctx)
 		return
