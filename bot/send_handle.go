@@ -2,7 +2,6 @@ package bot
 
 import (
 	"encoding/json"
-	"strings"
 	"time"
 )
 
@@ -42,17 +41,17 @@ func SendFileMsg(wxid string, content string) []byte {
 	j := &Message{
 		Id:       getId(),
 		Mtype:    ATTATCH_FILE,
-		Wxid:     "",
+		Wxid:     wxid,
 		Roomid:   "",
 		Content:  content,
 		Nickname: "",
 		Ext:      "",
 	}
-	if strings.Contains(wxid, "@") {
+	/* if strings.Contains(wxid, "@") {
 		j.Roomid = wxid
 	} else {
 		j.Wxid = wxid
-	}
+	} */
 	msg, err := json.Marshal(j)
 	if err != nil {
 		panic(err)
@@ -65,17 +64,17 @@ func SendImg(wxid string, content string) []byte {
 	j := &Message{
 		Id:       getId(),
 		Mtype:    PIC_MSG,
-		Wxid:     "",
+		Wxid:     wxid,
 		Roomid:   "",
 		Content:  content,
 		Nickname: "",
 		Ext:      "",
 	}
-	if strings.Contains(wxid, "@") {
+	/* if strings.Contains(wxid, "@") {
 		j.Roomid = wxid
 	} else {
 		j.Wxid = wxid
-	}
+	} */
 	msg, err := json.Marshal(j)
 	if err != nil {
 		panic(err)
@@ -88,17 +87,17 @@ func SendTxt(wxid string, content string) []byte {
 	j := &Message{
 		Id:       getId(),
 		Mtype:    TXT_MSG,
-		Wxid:     "",
+		Wxid:     wxid,
 		Roomid:   "",
 		Content:  content,
 		Nickname: "",
 		Ext:      "",
 	}
-	if strings.Contains(wxid, "@") {
+	/* if strings.Contains(wxid, "@") {
 		j.Roomid = wxid
 	} else {
 		j.Wxid = wxid
-	}
+	} */
 	msg, err := json.Marshal(j)
 	if err != nil {
 		panic(err)
