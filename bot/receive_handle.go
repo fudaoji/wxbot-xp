@@ -52,11 +52,11 @@ func ReceiveHandle(conn *websocket.Conn) {
 		logger.Log.Errorf("Unmarshal msg error:%v", err.Error())
 		return
 	}
+	log.Printf("Receive: %v", data)
 	switch data.Mtype {
 	case RECV_TXT_MSG:
 		fallthrough
 	case RECV_PIC_MSG:
-		log.Printf("Receive: %v", data)
 		resp := CallbackRes{RecvMessage: data, Appkey: ""}
 		NotifyWebhook(&resp)
 	}
