@@ -1,12 +1,8 @@
-redis:
-  host: 127.0.0.1
-  port: 6379
-  pwd: 
-  db: 0
-db:
-  host: 127.0.0.1
-  database: bot
-  username: root
-  password: 123456
-  port: 3306
+appkey: 15659827559
+webhook: http://wxbot.oudewa.cn/admin/onmessage/botxpcallback
+ws:
+  host: 124.223.70.93
+  port: 5555
+  schema: ws
+  path: /
 uploadpath: ./uploads/

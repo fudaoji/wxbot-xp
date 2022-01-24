@@ -7,27 +7,35 @@ import (
 	"github.com/spf13/viper"
 )
 
-// RedisConfig Redis配置
 var (
-	RedisConfig redisConfig
-	MySQLConfig mysqlConfig
+	WsConfig wsConfig
 )
 
 // Redis配置
-type redisConfig struct {
-	Host     string // Redis主机
-	Port     string // Redis端口
-	Password string // Redis密码
-	Db       int    // Redis库
+type wsConfig struct {
+	Host   string // 主机
+	Port   string // 端口
+	Path   string //
+	Schema string //
 }
 
-// MySQL配置
-type mysqlConfig struct {
-	Host     string // 主机
-	Port     string // 端口
-	Username string // 用户名
-	Password string // 密码
-	DbName   string // 数据库名称
+// InitWsConfig 初始化Websocket配置
+func InitWsConfig() {
+	//主机
+	host := GetVal("ws.host", "127.0.0.1")
+	// 端口
+	port := GetVal("ws.port", "5555")
+
+	schema := GetVal("ws.schema", "")
+
+	path := GetVal("ws.path", "/")
+
+	WsConfig = wsConfig{
+		Host:   host,
+		Port:   port,
+		Path:   path,
+		Schema: schema,
+	}
 }
 
 //InitConfig 读取配置文件
