@@ -15,6 +15,24 @@ type Message struct {
 	Ext      string `json:"ext"`
 }
 
+//GetContactList  获取通讯录
+func GetContactList() []byte {
+	j := &Message{
+		Id:       getId(),
+		Mtype:    USER_LIST,
+		Roomid:   "",
+		Wxid:     "",
+		Content:  "",
+		Nickname: "",
+		Ext:      "",
+	}
+	msg, err := json.Marshal(j)
+	if err != nil {
+		panic(err)
+	}
+	return msg
+}
+
 func getId() string {
 	return string(time.Now().Unix())
 }

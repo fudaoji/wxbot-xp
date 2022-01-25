@@ -3,6 +3,7 @@ package bot
 import (
 	"encoding/json"
 	"log"
+	"reflect"
 	"wxbot-xp/core"
 	. "wxbot-xp/core"
 	"wxbot-xp/logger"
@@ -33,6 +34,15 @@ type RecvMessage struct {
 	Time    string      `json:"time"`
 }
 
+//好友信息结构体
+type RespUserInfo struct {
+	Headimgurl string `json:"headimgurl"`
+	Nickname   string `json:"nickname"`
+	Remarkname string `json:"remarkname"`
+	Wxcode     string `json:"wxcode"`
+	Wxid       string `json:"wxid"`
+}
+
 // 回调请求体
 type CallbackRes struct {
 	Appkey string `json:"appkey"`
@@ -52,6 +62,7 @@ func ReceiveHandle(conn *websocket.Conn) {
 		logger.Log.Errorf("Unmarshal msg error:%v", err.Error())
 		return
 	}
+
 	log.Printf("Receive: %v", data)
 	switch data.Mtype {
 	case RECV_TXT_MSG:
@@ -59,6 +70,22 @@ func ReceiveHandle(conn *websocket.Conn) {
 	case RECV_PIC_MSG:
 		resp := CallbackRes{RecvMessage: data, Appkey: ""}
 		NotifyWebhook(&resp)
+	case USER_LIST:
+		/* var userList []RespUserInfo
+		for _, user := range data.Content {
+			userList = append(userList, RespUserInfo{
+				Headimgurl: user.headimg,
+				Nickname:   user.name,
+				Remarkname: user.remarks,
+				Wxcode:     user.wxcode,
+				Wxid:       user.wxid,
+			})
+		} */
+		log.Printf("Success: %v", InterfToSlice(data.Content)...)
+	case GET_USER_LIST_SUCCSESS:
+		log.Printf("Success: %v", data)
+	case GET_USER_LIST_FAIL:
+		log.Printf("Fail: %v", data)
 	}
 }
 
@@ -69,4 +96,18 @@ func NotifyWebhook(data *CallbackRes) {
 		data.Appkey = core.GetVal("appkey", "")
 		ReqPostJson(url, data, nil)
 	}
+}
+
+//InterfToSlice 接口转为slice
+func InterfToSlice(arr interface{}) []interface{} {
+	v := reflect.ValueOf(arr)
+	if v.Kind() != reflect.Slice {
+		panic("arr is not a slice")
+	}
+	l := v.Len()
+	ret := make([]interface{}, l)
+	for i := 0; i < l; i++ {
+		ret[i] = v.Index(i).Interface()
+	}
+	return ret
 }

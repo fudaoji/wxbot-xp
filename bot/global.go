@@ -18,6 +18,6 @@ const (
 	PERSONAL_DETAIL         = 6550
 	DESTROY_ALL             = 9999
 	NEW_FRIEND_REQUEST      = 37    //微信好友请求消息
-	AGREE_TO_FRIEND_REQUEST = 10000 //同意微信好友请求消息
+	AGREE_TO_FRIEND_REQUEST = 10000 //邀请好友直接入群或同意微信好友请求消息
 	ATTATCH_FILE            = 5003  //附件
 )

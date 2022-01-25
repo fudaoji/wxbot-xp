@@ -11,4 +11,9 @@ func initUserRoute(app *gin.Engine) {
 	group := app.Group("/user")
 	// hello
 	group.GET("/hello", controller.Hello)
+
+	// 获取好友列表
+	group.GET("/friends", controller.GetFriendsListHandle)
+	// 获取群组列表
+	group.GET("/groups", controller.GetGroupsListHandle)
 }
