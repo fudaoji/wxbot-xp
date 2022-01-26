@@ -37,14 +37,15 @@ func getId() string {
 	return string(time.Now().Unix())
 }
 
+//GetPersonalInfo 获取当前微信号信息
 func GetPersonalInfo() []byte {
 	j := &Message{
 		Id:       getId(),
-		Mtype:    TXT_MSG,
+		Mtype:    PERSONAL_INFO,
 		Wxid:     "",
 		Roomid:   "",
-		Content:  " a new socket has connected.",
-		Nickname: "doogie",
+		Content:  "",
+		Nickname: "",
 		Ext:      "",
 	}
 	msg, err := json.Marshal(j)

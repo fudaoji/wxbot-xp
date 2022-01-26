@@ -14,6 +14,6 @@ func initUserRoute(app *gin.Engine) {
 
 	// 获取好友列表
 	group.GET("/friends", controller.GetFriendsListHandle)
-	// 获取群组列表
-	group.GET("/groups", controller.GetGroupsListHandle)
+	// 获取当前用户信息
+	group.GET("/info", controller.GetCurrentUserInfoHandle)
 }

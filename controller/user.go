@@ -8,6 +8,18 @@ import (
 	"github.com/gorilla/websocket"
 )
 
+// GetCurrentUserInfoHandle 获取当前登录用户
+func GetCurrentUserInfoHandle(ctx *gin.Context) {
+	err := bot.GetInstance().WriteMessage(websocket.TextMessage, bot.GetPersonalInfo())
+	if err != nil {
+		core.FailWithMessage(err.Error(), ctx)
+		return
+	}
+
+	// 返回给前端
+	core.Ok(ctx)
+}
+
 // GetFriendsListHandle 获取好友列表
 func GetFriendsListHandle(ctx *gin.Context) {
 	err := bot.GetInstance().WriteMessage(websocket.TextMessage, bot.GetContactList())
